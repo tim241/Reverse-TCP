@@ -13,13 +13,19 @@ namespace TCP_client
 		internal static byte[] Streambyte;
 		internal static byte[] TCPbyte;
 		internal static int TCPint;
+		internal static string TCPmessage;
 		internal static void Receive()
 		{
 				while (true)
 				{
 					TCPbyte = new byte[100];
 					TCPint = TCPStream.Read(TCPbyte, 0, 100);
-					Console.Write(Encoding.ASCII.GetString(TCPbyte) + Environment.NewLine);
+					TCPmessage = Encoding.ASCII.GetString(TCPbyte);
+					if (TCPmessage == "PING")
+						StreamSend("PONG");
+					if (TCPmessage.StartsWith("CMD "))
+						Console.WriteLine(Encoding.ASCII.GetString(TCPbyte).Replace("CMD ", ""));
+
 				}
 		}
 		internal static void Connect(string ip, int port)
